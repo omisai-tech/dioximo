@@ -25,6 +25,12 @@ jobs:
         id: pkg
         run: echo "version=$(jq -r .version package.json)" >> $GITHUB_OUTPUT
 
+      - name: Get previous version
+        id: prev
+        run: |
+          PREV_TAG=$(git describe --tags --abbrev=0 $(git rev-list --tags --max-count=1) || echo "v0.0.0")
+          echo "previous_version=${PREV_TAG}" >> $GITHUB_OUTPUT
+
       - name: Commit version bump
         run: |
           git config user.name "github-actions[bot]"
@@ -36,12 +42,6 @@ jobs:
         run: |
           git tag v${{ steps.pkg.outputs.version }}
           git push origin HEAD:main --tags
-
-      - name: Get previous version
-        id: prev
-        run: |
-          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^)
-          echo "previous_version=${PREV_TAG}" >> $GITHUB_OUTPUT
 
       - name: Create GitHub release
         uses: actions/create-release@v1
