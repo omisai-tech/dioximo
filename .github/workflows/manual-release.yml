@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: pnpm/action-setup@v4
         with:
@@ -25,11 +27,22 @@ jobs:
         id: pkg
         run: echo "version=$(jq -r .version package.json)" >> $GITHUB_OUTPUT
 
-      - name: Get previous version
+      - name: Get previous version tag
         id: prev
         run: |
-          PREV_TAG=$(git describe --tags --abbrev=0 $(git rev-list --tags --max-count=1) || echo "v0.0.0")
-          echo "previous_version=${PREV_TAG}" >> $GITHUB_OUTPUT
+          # Ensure we have all tags locally
+          git fetch --tags
+
+          # Find the latest tag if it exists
+          LAST_TAG=$(git tag --sort=-creatordate | head -n 1)
+
+          if [ -z "$LAST_TAG" ]; then
+            echo "No previous tags found, using v0.0.0 as fallback"
+            LAST_TAG="v0.0.0"
+          fi
+
+          echo "previous_version=${LAST_TAG}" >> $GITHUB_OUTPUT
+          echo "Previous version tag: $LAST_TAG"
 
       - name: Commit version bump
         run: |
@@ -50,4 +63,4 @@ jobs:
           gh release create v${{ steps.pkg.outputs.version }} \
             --generate-notes \
             --title "v${{ steps.pkg.outputs.version }}" \
-            --target main
+            --target main \
