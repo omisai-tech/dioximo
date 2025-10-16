@@ -1,0 +1,36 @@
+{
+  "name": "dioximo",
+  "publisher": "omisai",
+  "displayName": "Dioximo",
+  "description": "Dioximo VS Code Color Theme",
+  "version": "0.0.1",
+  "author": {
+    "name": "Omisai Technologies",
+    "url": "https://github.com/omisai-tech"
+  },
+  "icoin": "icon.png",
+  "engines": {
+    "vscode": "^1.100.0"
+  },
+  "categories": [
+    "Themes"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/omisai-tech/dioximo"
+  },
+  "contributes": {
+    "themes": [
+      {
+        "label": "Dioximo Dark",
+        "uiTheme": "vs-dark",
+        "path": "./themes/Dioximo-Dark.json"
+      },
+      {
+        "label": "Dioximo Light",
+        "uiTheme": "vs",
+        "path": "./themes/Dioximo-Light.json"
+      }
+    ]
+  }
+}
