@@ -15,6 +15,10 @@
   "categories": [
     "Themes"
   ],
+  "pricing": "Free",
+  "sponsor": {
+    "url": "https://github.com/sponsors/omisai-tech"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/omisai-tech/dioximo"
