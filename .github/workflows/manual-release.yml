@@ -43,12 +43,11 @@ jobs:
           git tag v${{ steps.pkg.outputs.version }}
           git push origin HEAD:main --tags
 
-      - name: Create GitHub release
-        uses: actions/create-release@v1
-        with:
-          tag_name: v${{ steps.pkg.outputs.version }}
-          release_name: v${{ steps.pkg.outputs.version }}
-          body: |
-            **Full Changelog**: https://github.com/omisai-tech/dioximo/compare/${{ steps.prev.outputs.previous_version }}...v${{ steps.pkg.outputs.version }}
-          draft: false
-          prerelease: false
+      - name: Create GitHub release (auto notes)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create v${{ steps.pkg.outputs.version }} \
+            --generate-notes \
+            --title "v${{ steps.pkg.outputs.version }}" \
+            --target main
