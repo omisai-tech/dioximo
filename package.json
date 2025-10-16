@@ -8,7 +8,7 @@
     "name": "Omisai Technologies",
     "url": "https://github.com/omisai-tech"
   },
-  "icoin": "icon.png",
+  "icon": "icon.png",
   "engines": {
     "vscode": "^1.100.0"
   },
