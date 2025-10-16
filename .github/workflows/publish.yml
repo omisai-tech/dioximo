@@ -15,6 +15,9 @@ jobs:
         with:
           version: 9
 
+      - name: Install @vscode/vsce
+        run: pnpm add -g @vscode/vsce
+
       - name: Show package version
         run: echo "Publishing version $(jq -r .version package.json)"
 
