@@ -36,3 +36,19 @@ jobs:
         run: |
           git tag v${{ steps.pkg.outputs.version }}
           git push origin HEAD:main --tags
+
+      - name: Get previous version
+        id: prev
+        run: |
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^)
+          echo "previous_version=${PREV_TAG}" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub release
+        uses: actions/create-release@v1
+        with:
+          tag_name: v${{ steps.pkg.outputs.version }}
+          release_name: v${{ steps.pkg.outputs.version }}
+          body: |
+            **Full Changelog**: https://github.com/omisai-tech/dioximo/compare/${{ steps.prev.outputs.previous_version }}...v${{ steps.pkg.outputs.version }}
+          draft: false
+          prerelease: false
